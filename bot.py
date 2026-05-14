@@ -1,22 +1,25 @@
+
 import requests
 from bs4 import BeautifulSoup
 import schedule
 import time
 import json
 from datetime import date
+from dotenv import load_dotenv
+import os
+
 
 # =========================
 # KONFIG
 # =========================
 
-BOT_TOKEN = "8882518796:AAHUDl2uFzZgG99KLPA5jY_8d1L_fhZTBGA"
-CHAT_ID = "8226932793"
+load_dotenv()
 
-URL_OTOMOTO = "https://www.otomoto.pl/osobowe/toyota/rav4?search%5Bfilter_enum_country_origin%5D=pl&search%5Bfilter_enum_fuel_type%5D=petrol&search%5Bfilter_enum_no_accident%5D=1&search%5Bfilter_enum_original_owner%5D=1&search%5Bfilter_enum_registered%5D=1&search%5Bfilter_enum_service_record%5D=1&search%5Bfilter_float_price%3Afrom%5D=50000&search%5Bfilter_float_price%3Ato%5D=80000&search%5Badvanced_search_expanded%5D=true"
-
-URL_CHODZEN = "https://uzywane.chodzen.pl/oferty/brand/toyota/model/rav4/price-from/50000/price-to/80000/_sort/new"
-
-URL_PEWNEAUTO = "https://pewneauto.pl/dealer/011/brand/toyota/model/rav4/price-from/50000/price-to/80000/station-id/011/_sort/new"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+URL_OTOMOTO = os.getenv("URL_OTOMOTO")
+URL_CHODZEN = os.getenv("URL_CHODZEN")
+URL_PEWNEAUTO = os.getenv("URL_PEWNEAUTO")
 
 TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
