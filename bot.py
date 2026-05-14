@@ -93,36 +93,27 @@ def check_otomoto():
 
     print(f"Znaleziono: {len(offer_links)} ogłoszeń")
 
+    found_new = False
     for link_tag in offer_links:
-
         link = link_tag["href"]
-        
         title = link_tag.get_text(strip=True)
-
         print(f"✅ Ogłoszenie: {title}")
-
         # Próba wyciągnięcia danych
         lines = title.split()
-
         year = "?"
         mileage = "?"
         engine = "?"
-
         for i, word in enumerate(lines):
-
             # Rok
             if word.isdigit() and len(word) == 4:
                 if 2000 <= int(word) <= 2026:
                     year = word
-
             # Przebieg
             if "km" in word.lower():
                 mileage = word
-
             # Silnik
             if "cm3" in word.lower() or "hybrid" in word.lower():
                 engine = word
-
         message = f"""
 🚗 NOWA RAV4 (otomoto.pl)
 
@@ -134,10 +125,13 @@ def check_otomoto():
 
 🔗 {link}
 """
-
         print(message)
+        # Sprawdź, czy ogłoszenie jest nowe
+        if link not in db["sent"]:
+            found_new = True
         send_message(db, link, message)
-
+    if not found_new:
+        send_message(db, f"no-new-{date.today()}-otomoto", "Nie ma nic nowego (Otomoto)")
     save_db(db)
 
 
@@ -155,11 +149,10 @@ def check_chodzen_site(url, site_name, base_url):
 
     print(f"Znaleziono: {len(offers)} ogłoszeń")
 
+    found_new = False
     for offer in offers:
-
         link_tag = offer.find("a", href=True)
         link = base_url + link_tag["href"] if link_tag else "?"
-
         title_tag = offer.find("div", class_="o-bx__title")
         if title_tag:
             strong = title_tag.find("strong")
@@ -167,7 +160,6 @@ def check_chodzen_site(url, site_name, base_url):
             title = (strong.get_text(strip=True) if strong else "") + " " + (span.get_text(strip=True) if span else "")
         else:
             title = "?"
-
         info = offer.find("div", class_="o-bx__info")
         year = "?"
         mileage = "?"
@@ -181,12 +173,9 @@ def check_chodzen_site(url, site_name, base_url):
                     mileage = item
                 elif "cm" in item.lower() or "hybrid" in item.lower():
                     engine = item
-
         price_tag = offer.find("div", class_="o-bx__price")
         price = price_tag.find("strong").get_text(strip=True) if price_tag and price_tag.find("strong") else "?"
-
         print(f"✅ Ogłoszenie: {title.strip()}")
-
         message = f"""
 🚗 NOWA RAV4 ({site_name})
 
@@ -199,10 +188,13 @@ def check_chodzen_site(url, site_name, base_url):
 
 🔗 {link}
 """
-
         print(message)
+        # Sprawdź, czy ogłoszenie jest nowe
+        if link not in db["sent"]:
+            found_new = True
         send_message(db, link, message)
-
+    if not found_new:
+        send_message(db, f"no-new-{date.today()}-{site_name}", f"Nie ma nic nowego ({site_name})")
     save_db(db)
 
 

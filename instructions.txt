@@ -1,0 +1,52 @@
+Instrukcja uruchomienia aplikacji z wykorzystaniem venv (środowiska wirtualnego)
+============================================================
+
+1. Utwórz środowisko wirtualne (tylko za pierwszym razem):
+
+   Windows / macOS / Linux:
+   
+   ```bash
+   python -m venv venv
+   ```
+
+2. Aktywuj środowisko wirtualne:
+
+   Windows (cmd):
+   ```cmd
+   venv\Scripts\activate
+   ```
+
+   Windows (bash, Git Bash, PowerShell):
+   ```bash
+   source venv/Scripts/activate
+   ```
+
+   macOS / Linux:
+   ```bash
+   source venv/bin/activate
+   ```
+
+3. Zainstaluj wymagane biblioteki:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Upewnij się, że plik .env jest w katalogu projektu i zawiera odpowiednie dane.
+
+5. Uruchom aplikację:
+
+   ```bash
+   python bot.py
+   ```
+
+6. Aby wyjść ze środowiska venv:
+
+   ```bash
+   deactivate
+   ```
+
+Uwagi:
+- Plik .env nie powinien być commitowany do repozytorium.
+- Katalog venv oraz pliki cache są ignorowane przez .gitignore.
+- Jeśli pojawią się błędy związane z brakującymi bibliotekami, powtórz krok 3.

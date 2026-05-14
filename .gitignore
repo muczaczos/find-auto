@@ -1,2 +1,22 @@
 # Plik .env - nie dodawaj do repozytorium!
 .env
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.mypy_cache/
+.pytest_cache/
+*.sqlite3
+*.egg-info/
+dist/
+build/
+site/
+pip-log.txt
+pip-delete-this-directory.txt
