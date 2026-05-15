@@ -51,15 +51,16 @@ def save_db(db):
         json.dump(db, f)
 
 
-def send_message(db, ad_id, message):
-    if ad_id in db["sent"]:
+def send_message(db, ad_id, message, skip_duplicate_check=False):
+    if not skip_duplicate_check and ad_id in db["sent"]:
         print(f"⏭️ Już wysłane dziś: {ad_id[:60]}")
         return
     try:
         resp = requests.post(TELEGRAM_URL, data={"chat_id": CHAT_ID, "text": message})
         if resp.ok:
             print("✅ Wysłano na Telegram")
-            db["sent"].append(ad_id)
+            if not skip_duplicate_check:
+                db["sent"].append(ad_id)
         else:
             print("Błąd Telegram:", resp.text)
     except Exception as e:
@@ -131,7 +132,7 @@ def check_otomoto():
             found_new = True
         send_message(db, link, message)
     if not found_new:
-        send_message(db, f"no-new-{date.today()}-otomoto", "Nie ma nic nowego (Otomoto)")
+        send_message(db, f"no-new-{date.today()}-otomoto", "Nie ma nic nowego (Otomoto)", skip_duplicate_check=True)
     save_db(db)
 
 
@@ -194,7 +195,7 @@ def check_chodzen_site(url, site_name, base_url):
             found_new = True
         send_message(db, link, message)
     if not found_new:
-        send_message(db, f"no-new-{date.today()}-{site_name}", f"Nie ma nic nowego ({site_name})")
+        send_message(db, f"no-new-{date.today()}-{site_name}", f"Nie ma nic nowego ({site_name})", skip_duplicate_check=True)
     save_db(db)
 
 
